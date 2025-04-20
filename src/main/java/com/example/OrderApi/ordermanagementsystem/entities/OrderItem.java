@@ -1,5 +1,6 @@
 package com.example.OrderApi.ordermanagementsystem.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,8 +51,9 @@ public class OrderItem {
     private int loyaltyPointsEarned;
 
     @Setter
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "ORDER_ID")
+    @JsonIgnore
     private Order order;
 
     public OrderItem() {}

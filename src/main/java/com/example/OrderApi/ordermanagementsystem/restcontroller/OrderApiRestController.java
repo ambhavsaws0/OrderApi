@@ -4,12 +4,15 @@ import com.example.OrderApi.ordermanagementsystem.businessservice.OrderBusinessS
 import com.example.OrderApi.ordermanagementsystem.businessservice.UpdateOrderService;
 import com.example.OrderApi.ordermanagementsystem.entities.Order;
 import com.example.OrderApi.ordermanagementsystem.validation.OrderDataValidator;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/orderApi")
+@Tag(name = "Orders", description = "Order management APIs")
 public class OrderApiRestController {
 
     private final OrderDataValidator orderDataValidator;
@@ -22,7 +25,8 @@ public class OrderApiRestController {
         this.updateOrderService = updateOrderService;
     }
 
-    @PostMapping("/createOrder")
+    @Operation(summary = "Create a new order", description = "Creates a new order with customer and item details.")
+    @PostMapping("/orders")
     public String createOrder(@RequestBody final Order order) {
         final List<String> validationErrors = orderDataValidator.validateOrder(order);
         if (validationErrors.isEmpty()) {
@@ -31,12 +35,14 @@ public class OrderApiRestController {
         return "Order is not created, validations failed: " + String.join("", validationErrors);
     }
 
-    @GetMapping("/findAllOrders")
+    @Operation(summary = "Get all orders", description = "Retrieve all orders with corresponding line items.")
+    @GetMapping("/orders")
     public Iterable<Order> findAllOrders() {
         return orderBusinessService.findAllOrders();
     }
 
-    @PutMapping("/updatePaymentStatus")
+    @Operation(summary = "Update an order", description = "Update Order Status.")
+    @PutMapping("/orders")
     public String updateOrder(@RequestBody final Order order) {
         return updateOrderService.updateOrderStatus(order);
     }

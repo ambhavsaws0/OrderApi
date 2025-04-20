@@ -33,6 +33,7 @@ public class OrderBusinessService {
         if (availabilityCheckResult) {
             enrichOrderItems(orderItems);
             enrichOrder(order);
+            orderJpaRepository.save(order);
             return String.format("Order: %s has been created successfully.", order.getOrderNumber());
         }
         return "Order is not created because the availability check was failed for one of the Order Item, please submit the order after sometime.";

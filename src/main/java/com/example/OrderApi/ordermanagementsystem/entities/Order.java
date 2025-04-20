@@ -29,8 +29,8 @@ public class Order {
     private OrderStatus orderStatus;
 
     @Getter
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
-    private final List<OrderItem> orderItems = new ArrayList<>();
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     public void setOrderItems(final List<OrderItem> orderItems) {
         this.orderItems.addAll(orderItems);
