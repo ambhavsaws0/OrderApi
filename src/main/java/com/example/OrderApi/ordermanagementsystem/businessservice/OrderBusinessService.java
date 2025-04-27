@@ -1,10 +1,13 @@
 package com.example.OrderApi.ordermanagementsystem.businessservice;
 
 import com.example.OrderApi.OrderApiPeripheryService;
+import com.example.OrderApi.ordermanagementsystem.dto.OrderItemResponseDto;
+import com.example.OrderApi.ordermanagementsystem.dto.OrderResponseDto;
 import com.example.OrderApi.ordermanagementsystem.entities.Order;
 import com.example.OrderApi.ordermanagementsystem.entities.OrderItem;
 import com.example.OrderApi.ordermanagementsystem.entities.OrderItemStatus;
 import com.example.OrderApi.ordermanagementsystem.entities.OrderStatus;
+import com.example.OrderApi.ordermanagementsystem.exception.BusinessException;
 import com.example.OrderApi.ordermanagementsystem.repositories.OrderJpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,16 +30,18 @@ public class OrderBusinessService {
         return orderJpaRepository.findAll();
     }
 
-    public String saveOrder(final Order order) {
+    public OrderResponseDto saveOrder(final Order order) {
         final List<OrderItem> orderItems = order.getOrderItems();
         final boolean availabilityCheckResult = orderItems.stream().map(OrderItem::getProductSku).allMatch(orderApiPeripheryService::productInventoryCheck);//availabilityCheck
         if (availabilityCheckResult) {
             enrichOrderItems(orderItems);
             enrichOrder(order);
             orderJpaRepository.save(order);
-            return String.format("Order: %s has been created successfully.", order.getOrderNumber());
+            final List<OrderItemResponseDto> orderItemResponseDtos = order.getOrderItems().stream().map(item -> new OrderItemResponseDto(item.getProductName(), item.getQuantity(), item.getStatus())).toList();
+            return new OrderResponseDto(order.getOrderNumber(), order.getCustomerId(), order.getOrderStatus(), orderItemResponseDtos);
+        } else {
+            throw new BusinessException("Availability Check Failed", "Order is not created because the availability check was failed for one of the Order Item, please submit the order after sometime.");
         }
-        return "Order is not created because the availability check was failed for one of the Order Item, please submit the order after sometime.";
     }
 
     private void enrichOrder(final Order order) {
