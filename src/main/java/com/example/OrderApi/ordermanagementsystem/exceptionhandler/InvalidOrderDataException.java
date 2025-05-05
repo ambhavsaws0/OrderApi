@@ -1,4 +1,4 @@
-package com.example.OrderApi.ordermanagementsystem.exception;
+package com.example.OrderApi.ordermanagementsystem.exceptionhandler;
 
 public class InvalidOrderDataException extends BusinessException {
 

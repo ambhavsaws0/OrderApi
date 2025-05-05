@@ -7,7 +7,7 @@ import com.example.OrderApi.ordermanagementsystem.entities.Order;
 import com.example.OrderApi.ordermanagementsystem.entities.OrderItem;
 import com.example.OrderApi.ordermanagementsystem.entities.OrderItemStatus;
 import com.example.OrderApi.ordermanagementsystem.entities.OrderStatus;
-import com.example.OrderApi.ordermanagementsystem.exception.BusinessException;
+import com.example.OrderApi.ordermanagementsystem.exceptionhandler.BusinessException;
 import com.example.OrderApi.ordermanagementsystem.repositories.OrderJpaRepository;
 import org.springframework.stereotype.Service;
 

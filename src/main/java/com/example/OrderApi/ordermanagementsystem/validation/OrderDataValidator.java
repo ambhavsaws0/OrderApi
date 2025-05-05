@@ -2,7 +2,7 @@ package com.example.OrderApi.ordermanagementsystem.validation;
 
 import com.example.OrderApi.ordermanagementsystem.entities.Order;
 import com.example.OrderApi.ordermanagementsystem.entities.OrderItem;
-import com.example.OrderApi.ordermanagementsystem.exception.InvalidOrderDataException;
+import com.example.OrderApi.ordermanagementsystem.exceptionhandler.InvalidOrderDataException;
 import org.springframework.stereotype.Component;
 
 @Component

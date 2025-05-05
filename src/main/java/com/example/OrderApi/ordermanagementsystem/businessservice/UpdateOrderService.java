@@ -3,7 +3,7 @@ package com.example.OrderApi.ordermanagementsystem.businessservice;
 import com.example.OrderApi.ordermanagementsystem.dto.OrderResponseDto;
 import com.example.OrderApi.ordermanagementsystem.entities.Order;
 import com.example.OrderApi.ordermanagementsystem.entities.OrderStatus;
-import com.example.OrderApi.ordermanagementsystem.exception.BusinessException;
+import com.example.OrderApi.ordermanagementsystem.exceptionhandler.BusinessException;
 import com.example.OrderApi.ordermanagementsystem.repositories.OrderJpaRepository;
 import org.springframework.stereotype.Component;
 
