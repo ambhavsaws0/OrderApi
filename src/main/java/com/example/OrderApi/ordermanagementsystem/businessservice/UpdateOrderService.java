@@ -1,10 +1,13 @@
 package com.example.OrderApi.ordermanagementsystem.businessservice;
 
+import com.example.OrderApi.ordermanagementsystem.dto.OrderResponseDto;
 import com.example.OrderApi.ordermanagementsystem.entities.Order;
 import com.example.OrderApi.ordermanagementsystem.entities.OrderStatus;
+import com.example.OrderApi.ordermanagementsystem.exceptionhandler.BusinessException;
 import com.example.OrderApi.ordermanagementsystem.repositories.OrderJpaRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static com.example.OrderApi.ordermanagementsystem.entities.OrderStatus.nextPossibleOrderStatus;
@@ -18,7 +21,7 @@ public class UpdateOrderService {
         this.orderJpaRepository = orderJpaRepository;
     }
 
-    public String updateOrderStatus(final Order order) {
+    public OrderResponseDto updateOrderStatus(final Order order) {
         final String orderNumber = order.getOrderNumber();
         final Optional<Order> optionalOrder = orderJpaRepository.findByOrderNumber(orderNumber);
 
@@ -30,11 +33,11 @@ public class UpdateOrderService {
             if (nextPossibleOrderStatus(currentOrderStatus).contains(nextOrderStatus)) {
                 currentOrder.setOrderStatus(nextOrderStatus);
                 orderJpaRepository.save(currentOrder);
-                return String.format("Order: %s status has been successfully updated to %s.", orderNumber, nextOrderStatus);
+                return new OrderResponseDto(orderNumber, order.getCustomerId(), nextOrderStatus, Collections.emptyList());
             } else {
-                return String.format("As the current status of the Order: %s is %s, it is not allowed to set the status to %s.", orderNumber, currentOrderStatus, nextOrderStatus);
+                throw new BusinessException("Invalid Order Status", String.format("As the current status of the Order: %s is %s, it is not allowed to set the status to %s.", orderNumber, currentOrderStatus, nextOrderStatus));
             }
         }
-        return String.format("Order: %s does not exist in the system.", order.getOrderNumber());
+        throw new BusinessException("Invalid Order Error", String.format("Order: %s does not exist in the system.", order.getOrderNumber()));
     }
 }

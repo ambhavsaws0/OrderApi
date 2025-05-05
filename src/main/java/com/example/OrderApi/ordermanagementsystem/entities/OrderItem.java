@@ -2,6 +2,8 @@ package com.example.OrderApi.ordermanagementsystem.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +13,8 @@ import java.util.UUID;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 public class OrderItem {
 
     @Id
@@ -18,6 +22,7 @@ public class OrderItem {
     private long id;
     private long productId; // Identifier of the product being purchased.
     private String productName;
+    @Setter
     private int quantity; // Number of units of the product ordered.
     private double unitPrice;
     @Setter
@@ -26,6 +31,7 @@ public class OrderItem {
     private LocalDate deliveryDate;
 
     //Optional fields
+    @Setter
     private String productSku; // SKU (Stock Keeping Unit) of the product for inventory tracking.
     private double discountPercent; // Discount applied to this item (either a flat value or percentage).
     private UUID variantId; // Reference to a specific variant of the product (e.g., size or color).
